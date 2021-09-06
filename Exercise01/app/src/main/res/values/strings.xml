@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Example 01</string>
+    <string name="screenName">Registration</string>
+    <string name="headline1">User Information</string>
+    <string name="usernameHint">Username</string>
+    <string name="genderHint">Gender</string>
+    <string name="docIdHint">Document ID</string>
+    <string name="dobHint">Date of Birth</string>
+    <string name="btnNextText">Next</string>
+    <string name="btnSubmitText">Submit</string>
+</resources>
