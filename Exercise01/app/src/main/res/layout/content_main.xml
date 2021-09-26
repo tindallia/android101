@@ -20,72 +20,79 @@
         android:textSize="36sp"
         android:layout_marginTop="25dp"/>
 
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/etUsername"
-        android:height="48dp"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilUsername"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
+        android:layout_marginTop="15dp"
         android:hint="@string/usernameHint"
-        android:layout_marginTop="15dp"
-        android:inputType="text"
-        android:lines="1"
-        android:maxLines="1"
-        />
+        app:endIconMode="clear_text"
+        app:errorEnabled="true">
 
-    <!-- <AutoCompleteTextView
-         android:id="@+id/etGender"
-         android:layout_width="match_parent"
-         android:layout_height="wrap_content"
-         android:height="48dp"
-         android:layout_marginTop="15dp"
-         android:focusable="false"
-         android:completionThreshold="0"
-         android:hint="@string/genderHint"
-         android:inputType="text"
-         android:lines="1"
-         android:maxLines="1"
-         />-->
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etUsername"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1" />
 
-    <androidx.appcompat.widget.AppCompatSpinner
-        android:id="@+id/spGender"
-        style="@style/Widget.AppCompat.Spinner.Underlined"
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:id="@+id/tilGender"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:layout_marginTop="15dp"
-        android:height="48dp"
-        android:completionThreshold="0"
-        android:entries="@array/genderList"
-        android:focusable="false"
-        android:hint="@string/genderHint"
-        android:inputType="text"
+        app:errorEnabled="true"
+        android:hint="@string/genderHint">
 
-        android:lines="1"
-        android:maxLines="1" />
+        <AutoCompleteTextView
+            android:id="@+id/actvGender"
+            android:focusable="false"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="none"
+            tools:ignore="LabelFor" />
 
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/etDocId"
-        android:height="48dp"
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:id="@+id/tilDocId"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/docIdHint"
+        android:layout_height="60dp"
         android:layout_marginTop="15dp"
-        android:inputType="text"
-        android:lines="1"
-        android:maxLines="1"
-        />
+        app:endIconMode="clear_text"
+        app:errorEnabled="true"
+        android:hint="@string/docIdHint">
 
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/etDateOfBirth"
-        android:height="48dp"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etDocId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:id="@+id/tilDateOfBirth"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/dobHint"
+        android:layout_height="60dp"
         android:layout_marginTop="15dp"
-        android:focusable="false"
-        android:inputType="date"
-        android:lines="1"
-        android:maxLines="1"
-        />
+        app:endIconMode="clear_text"
+        app:errorEnabled="true"
+        android:hint="@string/dobHint">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etDateOfBirth"
+            android:focusable="false"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

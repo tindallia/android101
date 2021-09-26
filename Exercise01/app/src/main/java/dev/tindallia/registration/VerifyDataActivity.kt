@@ -3,8 +3,6 @@ package dev.tindallia.registration
 import android.content.Intent
 import android.os.Bundle
 import android.util.TypedValue
-import android.view.ViewGroup
-import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import registration.databinding.ActivityVerifyDataBinding
 
