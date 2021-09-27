@@ -6,3 +6,7 @@ data class UserData(
     var docId: String,
     var dateOfBirth: String
 )
+
+data class UserId(
+    var userId: String
+)

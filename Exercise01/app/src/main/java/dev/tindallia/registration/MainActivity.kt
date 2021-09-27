@@ -3,25 +3,31 @@ package dev.tindallia.registration
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.Typeface
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.util.TypedValue
 import android.view.View
-import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import dev.tindallia.registration.model.ApiClient
+import dev.tindallia.registration.model.UserModel
 import registration.R
 
 import registration.databinding.ActivityMainBinding
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.util.*
+import dev.tindallia.registration.model.ApiId
+import java.text.SimpleDateFormat
+
 
 private var selected : String? = null
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding : ActivityMainBinding
     private lateinit var spinner : AutoCompleteTextView
+    private var apiDate: String? = null
 
     private val months : Array<String> = arrayOf("January","February","March","April","May","June",
         "July","August","September","October","November","December")
@@ -37,11 +43,10 @@ class MainActivity : AppCompatActivity() {
 
         spinner = binding.content.actvGender
 
-
         val newAdapter = ArrayAdapterFactory.create(
             this,
             R.layout.spinner_item,
-            resources.getStringArray(R.array.genderList), spinner
+            resources.getStringArray(R.array.genderList)
         )
         spinner.setAdapter(newAdapter)
 
@@ -56,13 +61,22 @@ class MainActivity : AppCompatActivity() {
                 binding.content.etDateOfBirth.text.toString().isEmpty()) {
                 Toast.makeText(this, "Please complete the form to continue", Toast.LENGTH_SHORT).show()
             }else{
-                Data.setData(binding.content.etUsername.text.toString(),
+                binding.content.pbProgress.visibility = View.VISIBLE
+                /*Data.setData(binding.content.etUsername.text.toString(),
                     binding.content.actvGender.text.toString(),
                     binding.content.etDocId.text.toString(),
-                    binding.content.etDateOfBirth.text.toString(), this)
-                val intent = Intent(this,VerifyDataActivity::class.java)
+                    binding.content.etDateOfBirth.text.toString(), this)*/
+                /*val intent = Intent(this,VerifyDataActivity::class.java)
                 startActivity(intent)
-                finish()
+                finish()*/
+
+                postData(binding.content.etUsername.text.toString(),
+                    binding.content.actvGender.text.toString().lowercase(),
+                    binding.content.etDocId.text.toString(),
+                    apiDate!!
+                    //binding.content.etDateOfBirth.text.toString()
+                )
+
             }}
     }
 
@@ -71,13 +85,24 @@ class MainActivity : AppCompatActivity() {
         val year = myCal.get(Calendar.YEAR)
         val month = myCal.get(Calendar.MONTH)
         val day = myCal.get(Calendar.DAY_OF_MONTH)
+        val sdf = SimpleDateFormat("dd.MM.yyyy")
         val dpd = DatePickerDialog(this,
             {
                     _, selectedYear, selectedMonth, selectedDayOfMonth ->
-                //Toast.makeText(this,"DatePicker works. Selected: $day, $month, $year",Toast.LENGTH_LONG).show()
-                val selectedDate = "$selectedDayOfMonth ${months[selectedMonth]} $selectedYear"
+                //Toast.makeText(this,"DatePicker works. Selected: $selectedDayOfMonth, $selectedMonth, $selectedYear",Toast.LENGTH_LONG).show()
 
-                binding.content.etDateOfBirth.setText(selectedDate)
+                //get the date
+                val strSelectedDate = "$selectedDayOfMonth ${months[selectedMonth]} $selectedYear"
+                var strDatePattern = "$selectedDayOfMonth.${selectedMonth + 1}.$selectedYear"
+                val selectedDate: Date = sdf.parse(strDatePattern)
+
+                //convert the date
+                sdf.applyPattern("ddMMyyyy")
+                strDatePattern = sdf.format(selectedDate)
+
+                apiDate = strDatePattern
+
+                binding.content.etDateOfBirth.setText(strSelectedDate)
 
             }, year,month,day)
 
@@ -86,29 +111,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     object ArrayAdapterFactory{
-        fun create(context: Context, id: Int, list: Array<String>, _spinner: AutoCompleteTextView):
+        fun create(context: Context, id: Int, list: Array<String>):
                 ArrayAdapter<String> = object: ArrayAdapter<String>(context,id,list){
-            override fun getDropDownView(
-                position: Int,
-                convertView: View?,
-                parent: ViewGroup
-            ): View {
-                val view: TextView = super.getDropDownView(
-                    position,
-                    convertView,
-                    parent
-                ) as TextView
-                // set item text bold
-                view.setTypeface(view.typeface, Typeface.BOLD)
-
-
-                // make hint item color gray
-                if (position == 0) {
-                    view.setTextColor(Color.LTGRAY)
-                }
-
-                return view
-            }
+            //nothing to do
         }
     }
 
@@ -128,5 +133,35 @@ class MainActivity : AppCompatActivity() {
                 selected = null
             }
         }
+    }
+
+    private fun postData(username: String, gender: String, docId: String, dateOfBirth: String){
+        binding.content.pbProgress.visibility = View.VISIBLE
+
+        val context = this
+        val user = UserModel(username, gender, docId, dateOfBirth)
+        val call = ApiClient.getClient.postUser(user)
+
+        call.enqueue(object: Callback<ApiId>{
+            override fun onResponse(call: Call<ApiId>, response: Response<ApiId>) {
+                Toast.makeText(this@MainActivity, "Pushed to API",Toast.LENGTH_LONG).show()
+
+                val userId: String = response.body()?.id?:""
+
+                binding.content.pbProgress.visibility = View.GONE
+
+                Data.setUserId(userId, this@MainActivity)
+
+                val intent = Intent(context,VerifyDataActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
+
+            override fun onFailure(call: Call<ApiId>, t: Throwable) {
+                binding.content.pbProgress.visibility = View.GONE
+                Toast.makeText(context,t.message,Toast.LENGTH_SHORT).show()
+            }
+
+        })
     }
 }

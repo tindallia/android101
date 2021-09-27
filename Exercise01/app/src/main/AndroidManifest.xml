@@ -13,9 +13,12 @@
         android:theme="@style/Theme.Registration">
         <activity
             android:name="dev.tindallia.registration.VerifyDataActivity"
+            android:screenOrientation="portrait"
             android:exported="true" />
         <activity
             android:name="dev.tindallia.registration.MainActivity"
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="portrait"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

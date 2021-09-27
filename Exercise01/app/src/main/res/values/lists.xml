@@ -3,6 +3,6 @@
     <array name="genderList">
         <item>Male</item>
         <item>Female</item>
-        <item>Other</item>
+<!--        <item>Other</item>-->
     </array>
 </resources>
