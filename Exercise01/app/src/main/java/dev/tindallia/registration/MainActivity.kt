@@ -94,7 +94,7 @@ class MainActivity : AppCompatActivity() {
                 //get the date
                 val strSelectedDate = "$selectedDayOfMonth ${months[selectedMonth]} $selectedYear"
                 var strDatePattern = "$selectedDayOfMonth.${selectedMonth + 1}.$selectedYear"
-                val selectedDate: Date = sdf.parse(strDatePattern)
+                val selectedDate: Date = sdf!!.parse(strDatePattern)
 
                 //convert the date
                 sdf.applyPattern("ddMMyyyy")
