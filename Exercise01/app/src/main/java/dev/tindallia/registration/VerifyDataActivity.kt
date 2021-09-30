@@ -6,7 +6,11 @@ import android.util.TypedValue
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import dev.tindallia.registration.model.ApiClient
+import com.google.android.gms.tasks.OnSuccessListener
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GetTokenResult
+import dev.tindallia.registration.api.ApiClient
+import dev.tindallia.registration.model.UserData
 import dev.tindallia.registration.model.UserModel
 import registration.databinding.ActivityVerifyDataBinding
 import retrofit2.Call
@@ -17,8 +21,9 @@ class VerifyDataActivity : AppCompatActivity() {
     private lateinit var binding: ActivityVerifyDataBinding
     //private val userData = Data.getData()
     private lateinit var userData: UserData
-    private var userId = Data.getUserId()
-
+    private var userId = Data.getUserId().userId
+    private val firebaseUser = FirebaseAuth.getInstance().currentUser
+    private var idToken = Data.getToken().token
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,7 +31,7 @@ class VerifyDataActivity : AppCompatActivity() {
         val px: Int = (TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,10.0f,resources.displayMetrics)).toInt()
         binding.content.mainView.setPadding(px,px,px,px)
 
-        getData(userId.userId)
+        getData(userId, idToken)
 
         /*binding.content.tvUsername.text = userData.username
         binding.content.tvGender.text = userData.gender
@@ -42,10 +47,10 @@ class VerifyDataActivity : AppCompatActivity() {
         setContentView(binding.root)
     }
 
-    private fun getData(id: String){
+    private fun getData(id: String, token: String){
         try{
             binding.content.pbProgress.visibility = View.VISIBLE
-            val call = ApiClient.getClient.getUser(id)
+            val call = ApiClient.getClient.getUser(id, token)
 
             call!!.enqueue(object: Callback<UserModel?> {
                 override fun onResponse(call: Call<UserModel?>, response: Response<UserModel?>) {

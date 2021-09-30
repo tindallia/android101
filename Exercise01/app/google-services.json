@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "232170779800",
+    "firebase_url": "https://test-project-5646f.firebaseio.com",
+    "project_id": "test-project-5646f",
+    "storage_bucket": "test-project-5646f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:232170779800:android:74024be6944d2e1d284ced",
+        "android_client_info": {
+          "package_name": "dev.tindallia.registration"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "232170779800-n95fs99vr2a5rf890ln070g34c1pprf1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "dev.tindallia.registration",
+            "certificate_hash": "fedbacc150adb84d45b7a77f7dad4c471625337c"
+          }
+        },
+        {
+          "client_id": "232170779800-j4ue7mjqurv5u3egh79m2u9espipteou.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDlsJ3kEKtrk-iu33WrehbE2L8SUU2Wnr4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "232170779800-j4ue7mjqurv5u3egh79m2u9espipteou.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

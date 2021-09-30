@@ -4,12 +4,15 @@ import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.util.TypedValue
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import dev.tindallia.registration.model.ApiClient
+import com.google.android.gms.tasks.OnFailureListener
+import com.google.android.gms.tasks.OnSuccessListener
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GetTokenResult
+import dev.tindallia.registration.api.ApiClient
 import dev.tindallia.registration.model.UserModel
 import registration.R
 
@@ -28,11 +31,31 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding : ActivityMainBinding
     private lateinit var spinner : AutoCompleteTextView
     private var apiDate: String? = null
+    private lateinit var idToken: String
+    private val firebaseUser = FirebaseAuth.getInstance().currentUser
 
     private val months : Array<String> = arrayOf("January","February","March","April","May","June",
         "July","August","September","October","November","December")
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        if(firebaseUser == null){
+            invokeLogin()
+        }
+
+        firebaseUser!!.getIdToken(true).addOnSuccessListener(OnSuccessListener<GetTokenResult> { result ->
+            idToken = result.token ?: ""
+            if(idToken == ""){
+                Toast.makeText(this,"Invalid token",Toast.LENGTH_SHORT).show()
+                invokeLogin()
+            }
+            else{
+                Data.setToken(idToken, this)
+            }
+        }).addOnFailureListener {
+            Toast.makeText(this, "Invalid token", Toast.LENGTH_SHORT).show()
+            invokeLogin()
+        }
+
         super.onCreate(savedInstanceState)
         //setContentView(R.layout.activity_main)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -73,7 +96,8 @@ class MainActivity : AppCompatActivity() {
                 postData(binding.content.etUsername.text.toString(),
                     binding.content.actvGender.text.toString().lowercase(),
                     binding.content.etDocId.text.toString(),
-                    apiDate!!
+                    apiDate!!,
+                    idToken
                     //binding.content.etDateOfBirth.text.toString()
                 )
 
@@ -135,12 +159,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun postData(username: String, gender: String, docId: String, dateOfBirth: String){
+    private fun postData(username: String, gender: String, docId: String, dateOfBirth: String, token: String){
         binding.content.pbProgress.visibility = View.VISIBLE
 
         val context = this
         val user = UserModel(username, gender, docId, dateOfBirth)
-        val call = ApiClient.getClient.postUser(user)
+        val call = ApiClient.getClient.postUser(user, token)
 
         call.enqueue(object: Callback<ApiId>{
             override fun onResponse(call: Call<ApiId>, response: Response<ApiId>) {
@@ -164,4 +188,11 @@ class MainActivity : AppCompatActivity() {
 
         })
     }
+
+    private fun invokeLogin(){
+        val intent = Intent(this,LoginActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
 }

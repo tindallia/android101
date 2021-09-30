@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Example 01</string>
+    <string name="app_name">User Registration</string>
     <string name="screenName">Registration</string>
     <string name="headline1">User Information</string>
     <string name="usernameHint">Username</string>

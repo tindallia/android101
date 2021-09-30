@@ -24,3 +24,18 @@ data class ApiId(
     @SerializedName("name")
     val id: String
 )
+
+data class FbToken(
+    var token: String
+)
+
+data class UserData(
+    var username: String,
+    var gender: String,
+    var docId: String,
+    var dateOfBirth: String
+)
+
+data class UserId(
+    var userId: String
+)

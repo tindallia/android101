@@ -1,4 +1,4 @@
-package dev.tindallia.registration.model
+package dev.tindallia.registration.api
 
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
@@ -8,8 +8,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object ApiClient {
 
-//    private const val ENDPOINT_BASE_URL: String = "https://test-project-5646f.firebaseio.com/" // test database
-    private const val ENDPOINT_BASE_URL: String = "https://android101-7f15b-default-rtdb.asia-southeast1.firebasedatabase.app/mobileid/"
+    private const val ENDPOINT_BASE_URL: String = "https://test-project-5646f.firebaseio.com/" // test database
+//    private const val ENDPOINT_BASE_URL: String = "https://android101-7f15b-default-rtdb.asia-southeast1.firebasedatabase.app/mobileid/"
     val getClient: RetrofitApiInterface
         get() {
             val gson = GsonBuilder()
